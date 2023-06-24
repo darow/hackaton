@@ -5,21 +5,21 @@ import (
 )
 
 type VineyardRepository struct {
-	store      *Store
-	vineyards  map[int]*models.Vineyard
-	vineyardID int
+	Store      *Store
+	Vineyards  map[int]*models.Vineyard
+	VineyardID int
 }
 
 func (r *VineyardRepository) Post(v *models.Vineyard) {
-	if r.vineyardID == 0 {
-		r.vineyardID++
+	if r.VineyardID == 0 {
+		r.VineyardID++
 	}
 
-	_, ok := r.vineyards[v.ID]
+	_, ok := r.Vineyards[v.ID]
 	if !ok {
-		v.ID = r.vineyardID
+		v.ID = r.VineyardID
 	}
-	r.vineyards[v.ID] = v
+	r.Vineyards[v.ID] = v
 
 	return
 }
