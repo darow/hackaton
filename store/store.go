@@ -6,18 +6,18 @@ import (
 )
 
 type Store struct {
-	SessionRepo        *SessionRepository `json:"sessionRepo"`
-	vineyardRepository *VineyardRepository
+	SessionRepo  *SessionRepository  `json:"sessionRepo"`
+	VineyardRepo *VineyardRepository `json:"vineyardRepo"`
 	sync.RWMutex
 }
 
 func New() *Store {
-	m := make(map[int]*models.Session)
-	m[1] = &models.Session{}
-
 	return &Store{
 		SessionRepo: &SessionRepository{
-			Sessions: m,
+			Sessions: make(map[int]*models.Session, 0),
+		},
+		VineyardRepo: &VineyardRepository{
+			Vineyards: make(map[int]*models.Vineyard, 0),
 		},
 	}
 }
@@ -27,5 +27,5 @@ func (s *Store) Session() *SessionRepository {
 }
 
 func (s *Store) Vineyard() *VineyardRepository {
-	return s.vineyardRepository
+	return s.VineyardRepo
 }
