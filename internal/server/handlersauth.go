@@ -6,6 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const SESSION_NAME = "session"
+
 func (s *server) createSession(c *gin.Context) {
 	var role string
 	c.Bind(role)
@@ -16,11 +18,24 @@ func (s *server) createSession(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("session", session.Token, 9999, "", "", false, false)
+	c.SetCookie(SESSION_NAME, session.Token, 9999, "", "", false, false)
 	c.JSON(http.StatusCreated, session)
 }
 
 func (s *server) logout(c *gin.Context) {
-	c.SetCookie("session", "", -1, "", "", false, false)
+	c.SetCookie(SESSION_NAME, "", -1, "", "", false, false)
 	c.Status(http.StatusOK)
+}
+
+func (s *server) whoAmI(c *gin.Context) {
+	t := c.GetHeader(SESSION_NAME)
+
+	session, err := s.store.Session().Find(t)
+	if err != nil {
+		c.AbortWithError(http.StatusUnauthorized, err)
+
+		return
+	}
+
+	c.JSON(http.StatusOK, session.Role)
 }

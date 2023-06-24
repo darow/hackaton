@@ -1,12 +1,8 @@
 const apiUri = "localhost:8000"
 
-const contentElem = document.querySelector('#content')
-const loginBtn = document.querySelector('#login-btn')
-const signupBtn = document.querySelector('#signup-btn')
-const logoutBtn = document.querySelector('#logout-btn')
-const usernameElem = document.querySelector('#username')
-const playersBtn = document.querySelector('#playersBtn')
-const invitesBtn = document.querySelector('#invitesBtn')
+const groundsBtn = document.querySelector('#mapGrounds')
+const weatherBtn = document.querySelector('#mapWeather')
+const techBtn = document.querySelector('#mapTech')
 
 let currentUser
 let ws
