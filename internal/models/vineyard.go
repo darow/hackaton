@@ -7,7 +7,8 @@ type Vineyard struct {
 	XCoord         float64
 	YCoord         float64
 	WorkHistory    []WorkObject
-	WeatherHistory string
+	WeatherHistory []WeatherObject
+	GroundHistory  []GroundAnalysis
 }
 
 type WorkObject struct {
@@ -17,6 +18,15 @@ type WorkObject struct {
 }
 
 type WeatherObject struct {
-	Sunny int
-	Wet   int
+	Sunny       int
+	Wet         int
+	Temperature float32
+}
+
+type GroundAnalysis struct {
+	Date       time.Time
+	Organic    float32
+	Acidity    float32
+	NO3        float32
+	Phosphorus float32
 }
