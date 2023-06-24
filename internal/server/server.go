@@ -33,7 +33,7 @@ func newServer(store *store.Store, logger *zap.SugaredLogger) *server {
 func (s *server) configureRouter() {
 	s.router.Use(s.setRequestID())
 
-	s.router.GET("/", func(c *gin.Context) { c.Redirect(http.StatusFound, "/game.html") })
+	s.router.GET("/", func(c *gin.Context) { c.Redirect(http.StatusFound, "/myIndex.html") })
 	s.router.GET("/:filename", func(c *gin.Context) {
 		filepath := "./web/" + c.Param("filename")
 		c.File(filepath)

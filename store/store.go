@@ -5,7 +5,8 @@ import (
 )
 
 type Store struct {
-	sessionRepository *SessionRepository
+	sessionRepository  *SessionRepository
+	vineyardRepository *VineyardRepository
 	sync.RWMutex
 }
 
@@ -23,4 +24,8 @@ func (s *Store) Store() Store {
 
 func (s *Store) Session() *SessionRepository {
 	return s.sessionRepository
+}
+
+func (s *Store) Vineyard() *VineyardRepository {
+	return s.vineyardRepository
 }
