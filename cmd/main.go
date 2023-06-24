@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"hackaton/internal/server"
+	"hackaton/store"
+	"hackaton/util"
 	"log"
 
 	"go.uber.org/zap"
@@ -17,4 +20,15 @@ func main() {
 	}
 
 	log.Fatalln(server.Start(cfg, logger.Sugar()))
+
+}
+
+func check() {
+	st := store.New()
+	util.SaveToFile(st)
+
+	st1 := store.New()
+	util.GetFromFile(st1)
+
+	fmt.Print(st1)
 }

@@ -1,29 +1,29 @@
 package store
 
 import (
+	"hackaton/internal/models"
 	"sync"
 )
 
 type Store struct {
-	sessionRepository  *SessionRepository
+	SessionRepo        *SessionRepository `json:"sessionRepo"`
 	vineyardRepository *VineyardRepository
 	sync.RWMutex
 }
 
-var store Store
-
 func New() *Store {
+	m := make(map[int]*models.Session)
+	m[1] = &models.Session{}
+
 	return &Store{
-		sessionRepository: &SessionRepository{},
+		SessionRepo: &SessionRepository{
+			Sessions: m,
+		},
 	}
 }
 
-func (s *Store) Store() Store {
-	return store
-}
-
 func (s *Store) Session() *SessionRepository {
-	return s.sessionRepository
+	return s.SessionRepo
 }
 
 func (s *Store) Vineyard() *VineyardRepository {
