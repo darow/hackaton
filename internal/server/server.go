@@ -1,7 +1,7 @@
 package server
 
 import (
-	"hackaton/internal/store"
+	"hackaton/store"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,7 +9,7 @@ import (
 )
 
 type server struct {
-	store  store.Store
+	store  *store.Store
 	router *gin.Engine
 	logger *zap.SugaredLogger
 }
@@ -19,7 +19,7 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.router.ServeHTTP(w, r)
 }
 
-func newServer(store store.Store, logger *zap.SugaredLogger) *server {
+func newServer(store *store.Store, logger *zap.SugaredLogger) *server {
 	s := &server{
 		store:  store,
 		router: gin.Default(),
@@ -39,11 +39,9 @@ func (s *server) configureRouter() {
 		c.File(filepath)
 	})
 
-	s.router.POST("/user", s.createUser)
 	s.router.POST("/session", s.createSession)
 	s.router.GET("/online_users", s.getOnlineUsers)
 
 	authorized := s.router.Group("/auth", s.auth)
-	authorized.GET("/", s.whoAmI)
 	authorized.GET("/logout", s.logout)
 }

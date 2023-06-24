@@ -1,7 +1,7 @@
 package server
 
 import (
-	"hackaton/internal/store/teststore"
+	"hackaton/store"
 	"net"
 	"net/http"
 
@@ -9,9 +9,9 @@ import (
 )
 
 func Start(cfg *Config, logger *zap.SugaredLogger) error {
-	store := teststore.New()
+	s := store.New()
 
-	s := newServer(store, logger)
+	serv := newServer(s, logger)
 
-	return http.ListenAndServe(net.JoinHostPort(cfg.Host, cfg.Port), s)
+	return http.ListenAndServe(net.JoinHostPort(cfg.Host, cfg.Port), serv)
 }

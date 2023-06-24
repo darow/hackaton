@@ -7,5 +7,5 @@ import (
 )
 
 func (s *server) getOnlineUsers(c *gin.Context) {
-	c.JSON(http.StatusOK, s.store.User().GetTop())
+	c.JSON(http.StatusOK, "test")
 }

@@ -11,7 +11,7 @@ type ctxKey uint8
 
 const (
 	ctxRequestIDKey = "request_id"
-	ctxUserKey      = "user"
+	ctxSessionKey   = "session"
 )
 
 // setRequestID Присваиваем каждому запросу ID. Передаем его пользователю. Теперь мы можем находить каждый запрос по ID.
@@ -36,11 +36,5 @@ func (s *server) auth(c *gin.Context) {
 		return
 	}
 
-	user, err := s.store.User().Find(session.UserID)
-	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
-		return
-	}
-
-	c.Set(ctxUserKey, user)
+	c.Set(ctxSessionKey, session)
 }
