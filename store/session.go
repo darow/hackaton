@@ -12,7 +12,7 @@ import (
 
 type SessionRepository struct {
 	store    *Store
-	sessions map[int]*models.Session
+	Sessions map[int]*models.Session `json:"sessions,omitempty"`
 }
 
 // CreateToken вспомогательная функция создания токена для сессии.
@@ -32,14 +32,14 @@ func (r *SessionRepository) Create(role string) (*models.Session, error) {
 	s := &models.Session{
 		Token: r.createToken(),
 	}
-	s.ID = len(r.sessions)
-	r.sessions[s.ID] = s
+	s.ID = len(r.Sessions)
+	r.Sessions[s.ID] = s
 
 	return s, nil
 }
 
 func (r *SessionRepository) Find(token string) (*models.Session, error) {
-	for _, s := range r.sessions {
+	for _, s := range r.Sessions {
 		if s.Token == token {
 			return s, nil
 		}
