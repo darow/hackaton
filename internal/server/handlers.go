@@ -6,6 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *server) getOnlineUsers(c *gin.Context) {
+func (s *server) Test(c *gin.Context) {
 	c.JSON(http.StatusOK, "test")
 }

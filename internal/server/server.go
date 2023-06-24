@@ -40,7 +40,7 @@ func (s *server) configureRouter() {
 	})
 
 	s.router.POST("/session", s.createSession)
-	s.router.GET("/online_users", s.getOnlineUsers)
+	s.router.GET("/test", s.Test)
 
 	authorized := s.router.Group("/auth", s.auth)
 	authorized.GET("/logout", s.logout)
