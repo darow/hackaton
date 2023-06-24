@@ -45,4 +45,8 @@ func (s *server) configureRouter() {
 	})
 
 	s.router.GET("/test", s.Test)
+
+	vineyardRouter := s.router.Group("/vineyard", s.auth)
+	vineyardRouter.POST("/", s.PostVineyard)
+	vineyardRouter.GET("/", s.GetVineyard)
 }

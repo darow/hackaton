@@ -5,7 +5,7 @@ import (
 )
 
 type VineyardRepository struct {
-	Store      *Store
+	store      *Store
 	Vineyards  map[int]*models.Vineyard
 	VineyardID int
 }
@@ -16,10 +16,10 @@ func (r *VineyardRepository) Post(v *models.Vineyard) {
 	}
 
 	_, ok := r.Vineyards[v.ID]
-	if !ok {
+	if ok {
+		r.VineyardID++
 		v.ID = r.VineyardID
 	}
-	r.Vineyards[v.ID] = v
 
-	return
+	r.Vineyards[v.ID] = v
 }

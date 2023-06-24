@@ -9,8 +9,7 @@ import (
 const SESSION_NAME = "session"
 
 func (s *server) createSession(c *gin.Context) {
-	var role string
-	c.Bind(role)
+	role := c.PostForm("role")
 
 	session, err := s.store.Session().Create(role)
 	if err != nil {
