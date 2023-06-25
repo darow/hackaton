@@ -3,34 +3,13 @@ const apiUri = "localhost:8000"
 const groundsBtn = document.querySelector('#mapGrounds')
 const weatherBtn = document.querySelector('#mapWeather')
 const techBtn = document.querySelector('#mapTech')
+const contentElem = document.querySelector('#content')
 
-let currentUser
+let currentRole
 let ws
 
-checkAuth(showPlayersTop)
+checkAuth()
 
-invitesBtn.addEventListener('click', () => {
-    showInvites()
-})
-
-playersBtn.addEventListener('click', () => {
-    showPlayersTop()
-})
-
-loginBtn.addEventListener('click', async () => {
-    try {
-        await fetchTemplate('/login.html', 'loginForm')
-    } catch (error) {
-        console.log(error)
-    }
-})
-signupBtn.addEventListener('click', async () => {
-    try {
-        await fetchTemplate('/signup.html', 'signupForm')
-    } catch (error) {
-        console.log(error)
-    }
-})
 
 async function fetchTemplate(template, formName) {
     const response = await fetch(template)
@@ -221,28 +200,41 @@ function getUserInfoElement({ name, is_online, score, id }) {
     return `${name} id - "${id}" ${is_online} ${score} ${inviteButton}`
 }
 
-async function checkAuth(callback) {
+async function checkAuth() {
     try {
         const response = await fetch('/auth/')
-        const user = await response.json()
-
-        logoutBtn.hidden = false
-        loginBtn.hidden = true
-        signupBtn.hidden = true
-        usernameElem.innerHTML = user.name
-        currentUser = user
-        refreshWS(callback)
+        const role = await response.json()
+        currentRole = role
     } catch (error) {
-        if (ws != undefined) {
-            ws.close()
-        }
         console.log(error)
-        logoutBtn.hidden = true
-        loginBtn.hidden = false
-        signupBtn.hidden = false
-        usernameElem.innerHTML = ''
-        // if (webSocket!==undefined&&webSocket.readyState === WebSocket.OPEN) {
-        //     webSocket.close()
-        // }
+        showSelectRole()
     }
 }
+
+
+function showSelectRole() {
+    debugger;
+    contentElem.innerHTML = roleTemplate.formatUnicorn({});
+
+
+    document.forms['vibor'].addEventListener('submit', handleSubmitForm)
+
+    async function handleSubmitForm(event) {
+        event.preventDefault();
+
+        const response = await fetch(event.target.action, {
+            method: 'POST',
+            body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+        })
+        const data = await response.json()
+
+        if (data.error) {
+            document.querySelector('#error').textContent = data.error
+            return
+        }
+    }
+}
+
+
+
+

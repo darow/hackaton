@@ -17,13 +17,21 @@ String.prototype.formatUnicorn = String.prototype.formatUnicorn ||
         return str;
     };
 
-let playersTemplate = `
-<h3>Players Online</h3>
+let roleTemplate = `
 <div class="container">
-    <ul>
-        {playerList}
-    </ul>
+    <form id="vibor" action="/session">
+        <div class="form-group">
+            <label class="mb-1" for="selectJob">Выберите профессию:</label>
+            <select class="form-control mb-2" id="role" name="role">
+                <option>агроном</option>
+                <option>виноградарь</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить запрос</button>
+    </form>
 </div>
+
+<div id="error"></div>
 `
 
 let invitesTemplate = `

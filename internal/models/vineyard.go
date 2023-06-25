@@ -3,11 +3,11 @@ package models
 import "time"
 
 type Vineyard struct {
-	ID             int          `json:"id"`
-	XCoord         float64      `json:"xCoord"`
-	YCoord         float64      `json:"yCoord"`
-	WorkHistory    []WorkObject `json:"workHistory"`
-	WeatherHistory string       `json:"weatherHistory"`
+	ID             int             `json:"id"`
+	XCoord         float64         `json:"xCoord"`
+	YCoord         float64         `json:"yCoord"`
+	WorkHistory    []WorkObject    `json:"workHistory"`
+	WeatherHistory []WeatherObject `json:"weatherHistory"`
 	GroundHistory  []GroundAnalysis
 }
 

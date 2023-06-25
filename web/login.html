@@ -1,13 +1,13 @@
 <div class="container d-flex align-items-center justify-content-center">
-    <form id="loginForm" style="width: 23rem;" action="/session" method="POST">
-        <label class="form-label mt-5" for="name">Имя пользователя</label>
-        <input name="name" id="name" class="form-control form-control-lg">
-
-        <label class="form-label mt-5" for="password">Пароль</label>
-        <input name="password" type="password" id="password" class="form-control form-control-lg">
-
-        <p id="error" class="text-danger"></p>
-        <input class="btn btn-lg btn-success btn-block mt-5" type="submit" value="Войти">
+    <form id="vibor" action="/url-address">
+        <div className="form-group">
+            <label className="mb-1" htmlFor="selectJob">Выберите профессию:</label>
+            <select className="form-control mb-2" id="selectJob">
+                <option>агроном</option>
+                <option>виноградарь</option>
+            </select>
+        </div>
+        <button type="submit" className="btn btn-primary">Отправить запрос</button>
     </form>
 </div>
 
