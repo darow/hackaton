@@ -6,199 +6,8 @@ const techBtn = document.querySelector('#mapTech')
 const contentElem = document.querySelector('#content')
 
 let currentRole
-let ws
 
 checkAuth()
-
-
-async function fetchTemplate(template, formName) {
-    const response = await fetch(template)
-
-    contentElem.innerHTML = await response.text()
-    document.forms[formName].addEventListener('submit', handleSubmitForm)
-}
-
-async function handleSubmitForm(event) {
-    event.preventDefault();
-
-    // TODO do something here to show user that form is being submitted
-    const response = await fetch(event.target.action, {
-        method: 'POST',
-        body: new URLSearchParams(new FormData(event.target)) // event.target is the form
-    })
-    const data = await response.json()
-
-    if (data.error) {
-        document.querySelector('#error').textContent = data.error
-        return
-    }
-
-    checkAuth(showPlayersTop)
-}
-
-logoutBtn.addEventListener('click', async () => {
-    const response = await fetch('/auth/logout')
-
-    if (response.status === 200) {
-        await checkAuth()
-    }
-
-    await showPlayersTop()
-})
-
-function refreshWS(callback) {
-    closeWebSocket(ws)
-    ws = createWebSocket(`ws://${apiUri}/auth/ws`, { open: callback })
-}
-
-function createWebSocket(url, options, handlerCallbacks) {
-    if (!url) {
-        console.log('Не передан URL!')
-    }
-
-    const eventNames = {
-        open: 'open',
-        close: 'close',
-        error: 'error',
-        message: 'message',
-    }
-
-    const callbacks = {
-        [eventNames.open]: () => {},
-        [eventNames.close]: () => {},
-        [eventNames.error]: () => {},
-        [eventNames.message]: () => {},
-        ...handlerCallbacks
-    }
-
-    const handlers = {
-         [eventNames.open]: () => {
-            console.log('Successfully Connected')
-            callbacks.open()
-        },
-        [eventNames.close]: event => {
-            console.log('Socket Closed Connection: ', event);
-            callbacks.close()
-        },
-        [eventNames.error]: error => {
-            console.log('Socket Error: ', error);
-            callbacks.error()
-        },
-        [eventNames.message]: () => {
-            console.log(`server message: ${e.data}`)
-            callbacks.message()
-        },
-    }
-
-    wsLocal = new WebSocket(url)
-    configureWS(wsLocal, options.open)
-
-    // Object.values(eventNames).forEach(event => {
-    //     webSocket.addEventListener(event, handlers[event])
-    // })
-
-    return wsLocal
-}
-
-function closeWebSocket(webSocket) {
-    if (!webSocket) {
-        return
-    }
-
-    webSocket.close()
-}
-
-function configureWS(wsLocal, callback = () => {}) {
-    wsLocal.onopen = () => {
-        console.log("я онлайн");
-        callback()
-    };
-
-    wsLocal.onclose = () => {
-        console.log("я офлайн");
-        callback()
-    };
-
-    document.forms['socketForm'].addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        wsLocal.send(event.target.childNodes[1].value)
-    });
-
-    wsLocal.onmessage = function (e) {
-        console.log(e.data);
-
-    };
-}
-
-async function showInvites() {
-    const response = await fetch('/auth/invites')
-    const invites = await response.json()
-
-    let toMe = 'приглашений нет'
-    if (invites.toMe != null) {
-        toMe = Object.values(invites.toMe).map((invite, index) => {
-            return `<li class="m-1">${invite.id}. от: ${invite.from} ${invite.created!=undefined?invite.created:""}
-                <btn id="accept-${invite.id}" class="btn btn-sm btn-success btn-block">принять</btn>
-                <btn id="decline-${invite.id}" class="btn btn-sm btn-danger btn-block">отклонить</btn>
-            </li>`
-        })
-    }
-
-    let fromMe = 'приглашений нет'
-    if (invites.fromMe != null) {
-        fromMe = Object.values(invites.fromMe).map((invite, index) => {
-            return `<li class="m-1">${invite.id}. кому:${invite.to} ${invite.created!=undefined?invite.created:""}</li>`
-        })
-    }
-
-    contentElem.innerHTML = invitesTemplate.formatUnicorn({ invitesToMe: toMe, invitesFromMe: fromMe });
-
-    if (invites.toMe != null) {
-        Object.values(invites.toMe).map((inv) => {
-            let inviteBtn = document.querySelector(`#accept-${inv.id}`)
-            inviteBtn.addEventListener('click', () => {
-                ws.send(`{"action": "decideInvite", "body":{"decision": "accepted", "inviteID": ${inv.id}}}`)
-            })
-
-            let declineBtn = document.querySelector(`#decline-${inv.id}`)
-            declineBtn.addEventListener('click', () => {
-                ws.send(`{"action": "decideInvite",  "body":{"decision": "declined", "inviteID": ${inv.id}}}`)
-            })
-        })
-    }
-
-}
-
-async function showPlayersTop() {
-    const response = await fetch('/online_users')
-    const data = await response.json()
-
-    const playersList = Object.values(data).map((user, index) => {
-        return `<li class="m-1">${index + 1}. ${getUserInfoElement(user)}</li>`
-    })
-
-    contentElem.innerHTML = playersTemplate.formatUnicorn({ playerList: playersList });
-
-    Object.values(data).map((user) => {
-        if (user.id == currentUser.id) {
-            return
-        }
-        let inviteBtn = document.querySelector(`#invite-${user.id}`)
-        inviteBtn.addEventListener('click', () => {
-            ws.send(`{"action": "createInvite", "body":{"to":${user.id}}}`)
-        })
-    })
-}
-
-function getUserInfoElement({ name, is_online, score, id }) {
-    let inviteButton = `<btn id="invite-${id}" class="btn btn-sm btn-success btn-block">пригласить✉</btn>`
-    if (id == currentUser.id) {
-        inviteButton = ''
-    }
-
-    return `${name} id - "${id}" ${is_online} ${score} ${inviteButton}`
-}
 
 async function checkAuth() {
     try {
@@ -213,9 +22,7 @@ async function checkAuth() {
 
 
 function showSelectRole() {
-    debugger;
     contentElem.innerHTML = roleTemplate.formatUnicorn({});
-
 
     document.forms['vibor'].addEventListener('submit', handleSubmitForm)
 
@@ -232,7 +39,13 @@ function showSelectRole() {
             document.querySelector('#error').textContent = data.error
             return
         }
+
+        showWeatherMap()
     }
+}
+
+function showWeatherMap() {
+    window.open("https://www.figma.com/proto/geF3iCHB49EXLRPwj6VVuN/Untitled?type=design&node-id=14-355&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=14%3A355")
 }
 
 

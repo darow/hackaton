@@ -33,19 +33,3 @@ let roleTemplate = `
 
 <div id="error"></div>
 `
-
-let invitesTemplate = `
-<h3>Активные приглашения</h3>
-<h4>Вас пригласили:</h4>
-<div class="container">
-    <ul>
-        {invitesToMe}
-    </ul>
-</div>
-<h4>Вы пригласили:</h4>
-<div class="container">
-    <ul>
-        {invitesFromMe}
-    </ul>
-</div>
-`

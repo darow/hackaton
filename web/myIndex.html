@@ -8,25 +8,20 @@
     <link href="/bootstrap.min.css" rel="stylesheet">
     <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
 </head>
-<body>
+<body class = "bg-dark text-light">
 
 <header class="p-3 bg-dark text-white">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <ul class="nav mt-2 col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <button id="mapGrounds" type="button" class="btn btn-light pb-2 m-3 ">
-                    <img src="weather.jpg" height="20px">
-                    карта почвы
-                </button>
-                <button id="mapWeather" type="button" class="btn btn-light pb-2 m-3 ">
-                    <img src="weather.jpg" height="20px">
-                    карта погоды
-                </button>
-                <button id="mapTech" type="button" class="btn btn-light pb-2 m-3">
-                    <img src="techMap.jpg" height="20px">
-                    технологическая карта
-                </button>
-            </ul>
+    <div class="container pt-3" style="border-bottom: 2px solid #716da7; color: #716da7; font-size:24px; ">
+        <div class="d-flex justify-content-between">
+                <div id="mapGrounds" type="button" class="bg-dark" >
+                    Интерактивная карта
+                </div>
+                <div id="mapGround1s" type="button" class="bg-dark">
+                    Технологическая карта
+                </div>
+                <div id="map3Grounds" type="button" class="bg-dark">
+                    Критерии болезней
+                </div>
         </div>
     </div>
 </header>
